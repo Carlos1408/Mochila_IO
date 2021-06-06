@@ -20,8 +20,7 @@ class nuevo_problema:
         self.nombre.grid(column=0,row=0,padx=4,pady=4)
         
         #Caja de texto nombre problema
-        self.caja_nombre=StringVar()
-        self.texto_nombre=Entry(self.ventana, textvariable = self.caja_nombre)
+        self.texto_nombre=Entry(self.ventana)
         self.texto_nombre.grid(column=1,row=0,padx=4,pady=4)
 
 
@@ -61,7 +60,7 @@ class nuevo_problema:
     def generar_ingreso_datos(self):
         cantidad = self.caja_cantidad.get()
         capacidad = self.caja_capacidad.get()
-        nombre = self.caja_nombre.get()
+        nombre = self.texto_nombre.get()
         print('CANTIDAD ', cantidad)
         print('CAPACIDAD ', capacidad)
         print('NOMBRE ', nombre)

@@ -3,7 +3,7 @@ from .nuevo_problema import *
 from .menu_problema import *
 
 class resultado:
-    def __init__(self,nom, cant, soluciones, pesos, utilidad, indice = 0):
+    def __init__(self,nom, cant, soluciones, pesos, utilidad, formulacion, indice = 0):
        
         # Creacion de la ventana solucion
         self.nom =nom
@@ -11,11 +11,9 @@ class resultado:
         self.cant=cant
         self.utilidad=utilidad
         self.pesos=pesos
-        print(self.soluciones)
-        print(self.cant)
-        print(self.utilidad)
-        print(self.pesos)
+        self.formulacion = formulacion
         self.indice = indice
+
         self.ventana = Tk()
         self.x=550
         self.y=250
@@ -35,7 +33,7 @@ class resultado:
         self.ventana.config(bg="linen")
 
         #Llamada al menu problema
-        menu_problema(self.ventana)
+        menu_problema(self.ventana, self.formulacion)
        
         self.renderizar_soluciones()
 

@@ -133,3 +133,18 @@ class Mochila:
                 peso += fila[2]
             pesos.append(peso)
         return tuple(pesos)
+
+    def set_nombre(self, nombre_problema):
+        self.nombre_problema = nombre_problema
+
+    def get_formulacion_problema_dicc(self):
+       form_prob =  self.get_formulacion_problema
+       prob = {
+           'nombre':self.nombre_problema,
+           'capacidad': self.capacidad,
+           'cantidad_items': len(self.items),
+           'items':[]
+       }
+       for item in self.items:
+           prob['items'].append((item.nombre, item.peso, item.beneficio))
+       return str(prob)

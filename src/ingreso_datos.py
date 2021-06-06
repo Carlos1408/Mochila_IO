@@ -1,5 +1,5 @@
 from tkinter import *
-from .menu_problema import menu_problema
+# from .menu_problema import menu_problema
 from .resultado import resultado
 # from .nuevo_problema import nuevo_problema
 from .Solucion.Mochila import Mochila
@@ -7,11 +7,16 @@ from .Solucion.Item import Item
 
 
 class ingreso_datos:
-    def __init__(self,cant,cap,nom):
-        self.cant = cant
-        self.cap = cap
-        self.nom = nom
-
+    def __init__(self,cant,cap,nom, formulacion = None):
+        self.formulacion = formulacion
+        if formulacion is None:
+            self.cant = cant
+            self.cap = cap
+            self.nom = nom
+        else:
+            self.cant = self.formulacion['cantidad']
+            self.cap = self.formulacion['capacidad_items']
+            self.nom = self.formulacion['nombre']
         # Creacion de la ventana problema
         self.x=420
         self.y=250
@@ -34,13 +39,15 @@ class ingreso_datos:
       
 
         #Llamada al menu problema
-        menu_problema(self.ventana)
+        # menu_problema(self.ventana)
 
         self.etiquetas_datos()
 
         # Creacion del marco matriz
         self.matriz_problema = Frame(self.ventana)
         self.genera_matriz()
+        if not self.formulacion is None:
+            self.auto_completar()
         self.matriz_problema.pack()
 
         #Boton cancelar
@@ -60,12 +67,11 @@ class ingreso_datos:
 # Creacion de la funcion que genera la matriz 
     def genera_matriz(self):
         self.matriz = []
-        for r in range(0,self.cant):
+        for r in (range(0,self.cant)):
             fila = []
             for c in range(0, 3):
                 celda = Entry(self.matriz_problema, width=12)
                 celda.grid(padx=5, pady=5, row=r, column=c)
-                # celda.insert(0, '({}, {})'.format(r, c))
                 celda.config(fg="white",    # letras
                             bg="skyblue",   # fondo
                             font=("Verdana",12))
@@ -73,9 +79,9 @@ class ingreso_datos:
             self.matriz.append(fila)
 
     
-    def generar_ventana_solucion(self, soluciones, pesos, utilidad):
+    def generar_ventana_solucion(self, soluciones, pesos, utilidad, formulacion):
         print("self cantidad ",self.cant)
-        resultado(self.nom,self.cant, soluciones, pesos, utilidad)
+        resultado(self.nom,self.cant, soluciones, pesos, utilidad, formulacion)
         
     def get_datos_tabla(self):
         nombres = []
@@ -85,20 +91,13 @@ class ingreso_datos:
             nombres.append(fila[0].get())
             pesos.append(int(fila[1].get()))
             utilidades.append(int(fila[2].get()))
-        print("nom ",nombres)
-        print("pesos ",pesos)
-        print("utilidades ",utilidades)
-        print(self.get_nombre())
         return nombres, pesos, utilidades
 
     def auto_completar(self):
-        nom = ('producto 1', 'producto 2', 'producto 3')
-        pe = ('12', '5', '7')
-        uti = ('4', '2', '1')
-        for i, fila in enumerate(self.matriz):
-            fila[0].insert(0,nom[i])
-            fila[1].insert(0,pe[i])
-            fila[2].insert(0,uti[i])
+        items = self.formulacion['items']
+        for fila, fila_i in zip(self.matriz, items):
+            for dato, celda in zip(fila, fila_i):
+                celda.insert(0, dato)
 
     def solucionar_problema(self):
         self.auto_completar()
@@ -107,13 +106,15 @@ class ingreso_datos:
         for n, p, u in zip(nombres, pesos, utilidades):
             items.append(Item(n, p, u))
         self.mochila = Mochila(self.cap, items)
+        self.mochila.set_nombre(self.nom)
         self.mochila.crear_etapas()
         self.mochila.resolver()
         soluciones = self.mochila.get_soluciones()
         pesos_sol = self.mochila.get_pesos_sol()
         utilidad_sol = self.mochila.get_utilidad_neta()
+        formulacion = self.mochila.get_formulacion_problema_dicc()
         self.ventana.destroy()
-        self.generar_ventana_solucion(soluciones, pesos_sol, utilidad_sol)
+        self.generar_ventana_solucion(soluciones, pesos_sol, utilidad_sol, formulacion)
 
 #Creacion de otras Ventanas
     def cancelar(self):
