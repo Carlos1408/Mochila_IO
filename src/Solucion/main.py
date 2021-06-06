@@ -1,7 +1,7 @@
-from Item import Item
-from Mochila import Mochila
+from .Item import Item
+from .Mochila import Mochila
 from random import randint
-from PDF import generarPDF
+from .PDF import generarPDF
 
 # Item(nombre, peso, beneficio)
 items1 = [Item('Aceite', 1, 8),

@@ -1,21 +1,22 @@
 from tkinter import *
 from .menu_problema import menu_problema
 from .resultado import resultado
-
+# from .nuevo_problema import nuevo_problema
 from .Solucion.Mochila import Mochila
 from .Solucion.Item import Item
 
 
 class ingreso_datos:
-    def __init__(self,cant,cap):
+    def __init__(self,cant,cap,nom):
         self.cant = cant
         self.cap = cap
+        self.nom = nom
 
         # Creacion de la ventana problema
         self.x=420
         self.y=250
         self.ventana = Tk()
-        if(self.cant >=2 and self.cant<=7):
+        if(self.cant >=2 and self.cant<=6):
             self.x = self.x + (1*self.cant )
             self.y = self.y + (20*self.cant )
         else:
@@ -51,7 +52,8 @@ class ingreso_datos:
         # self.ok=Button(self.ventana, text="Correr",command=self.get_datos_tabla,bg="lavender")
         self.ok=Button(self.ventana, text="Correr",command=self.solucionar_problema,bg="lavender")
         self.ok.pack(side=RIGHT,padx=70,pady=15)
-
+        
+        print("Datos ",self.datos())
 
         self.ventana.mainloop()
 
@@ -73,7 +75,7 @@ class ingreso_datos:
     
     def generar_ventana_solucion(self, soluciones, pesos, utilidad):
         print("self cantidad ",self.cant)
-        resultado(self.cant, soluciones, pesos, utilidad)
+        resultado(self.nom,self.cant, soluciones, pesos, utilidad)
         
     def get_datos_tabla(self):
         nombres = []
@@ -83,6 +85,10 @@ class ingreso_datos:
             nombres.append(fila[0].get())
             pesos.append(int(fila[1].get()))
             utilidades.append(int(fila[2].get()))
+        print("nom ",nombres)
+        print("pesos ",pesos)
+        print("utilidades ",utilidades)
+        print(self.get_nombre())
         return nombres, pesos, utilidades
 
     def auto_completar(self):
@@ -100,12 +106,12 @@ class ingreso_datos:
         items = []
         for n, p, u in zip(nombres, pesos, utilidades):
             items.append(Item(n, p, u))
-        mochila = Mochila(self.cap, items)
-        mochila.crear_etapas()
-        mochila.resolver()
-        soluciones = mochila.get_soluciones()
-        pesos_sol = mochila.get_pesos_sol()
-        utilidad_sol = mochila.get_utilidad_neta()
+        self.mochila = Mochila(self.cap, items)
+        self.mochila.crear_etapas()
+        self.mochila.resolver()
+        soluciones = self.mochila.get_soluciones()
+        pesos_sol = self.mochila.get_pesos_sol()
+        utilidad_sol = self.mochila.get_utilidad_neta()
         self.ventana.destroy()
         self.generar_ventana_solucion(soluciones, pesos_sol, utilidad_sol)
 
@@ -116,6 +122,9 @@ class ingreso_datos:
 
     def etiquetas_datos(self):
 
+        self.etq_nombre=Label(self.ventana, text=f'Nombre del problema : {self.nom}',bg="linen")
+        self.etq_nombre.pack(side=TOP)
+
         self.etq_capacidad=Label(self.ventana, text=f'Capacidad de la mochila : {self.cap}',bg="linen")
         self.etq_capacidad.pack(side=TOP)
         
@@ -124,5 +133,9 @@ class ingreso_datos:
 
         self.etq_datos=Label(self.ventana, text="      Articulos                Peso                     Utilidad",bg="linen")
         self.etq_datos.pack(side=TOP)
+
+    
+    
+    
 
     

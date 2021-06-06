@@ -2,11 +2,9 @@ from tkinter import *
 from tkinter import filedialog as fd
 import os
 from .nuevo_problema import nuevo_problema
-from .menu_problema import menu_problema
 
 class principal:
     def __init__(self):
-        #Creacion de otras Ventanas
             
         # Creacion de la ventana principal
         
@@ -18,20 +16,21 @@ class principal:
         self.principal.geometry(f'{ancho}x{alto}+{x}+{y}')
         self.principal.resizable(0,0)
         self.principal.title("Ventana principal")
-        self.principal.config(bg="linen")
+        self.principal.iconbitmap("src/Imagenes/mochila.ico")
+        self.principal.config(bg="thistle1",)
 
         # Creacion de la barra de menus
         self.barra_menu = Menu(self.principal)
 
         # # Creacion de menus
-        self.archivo = Menu(self.barra_menu)
-        self.acerca_de = Menu(self.barra_menu)
+        self.archivo = Menu(self.barra_menu,tearoff=0)
+        self.acerca_de = Menu(self.barra_menu,tearoff=0)
 
         # # Creacion de los comandos para menu archivo
         self.archivo.add_command(label="Nuevo Problema", command=self.abrir_nuevo)
         self.archivo.add_command(label="Cargar problema", command= self.recuperar)
-        self.archivo.add_command(label="Guardar", command=self.guardar)
-        self.archivo.add_command(label="Salir")
+        self.archivo.add_separator()
+        self.archivo.add_command(label="Salir",command=self.principal.quit)
 
         # # Agregar los menus a la barra de menus
         self.barra_menu.add_cascade(label="Archivo", menu=self.archivo)
@@ -48,12 +47,6 @@ class principal:
         self.principal.destroy()
         nuevo_problema()
 
-    def guardar(self):
-        nombre_archivo=fd.asksaveasfilename(initialdir = os.getcwd() ,title = "Guardar como",filetypes = (("txt files","*.txt"),("todos los archivos","*.*")))
-        if nombre_archivo!='':
-            archivo=open(nombre_archivo + ".txt", "w", encoding="utf-8")
-            archivo.write(self.scrolledtext1.get("1.0", END))
-            archivo.close()
 
     def recuperar(self):
         nombre_archivo=fd.askopenfilename(initialdir = os.getcwd() ,title = "Seleccione archivo",filetypes = (("txt files","*.txt"),("todos los archivos","*.*")))
@@ -61,5 +54,4 @@ class principal:
             archivo=open(nombre_archivo, "r", encoding="utf-8")
             contenido=archivo.read()
             archivo.close()
-            self.scrolledtext1.delete("1.0", END) 
-            self.scrolledtext1.insert("1.0", contenido)
+            

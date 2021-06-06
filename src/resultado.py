@@ -3,9 +3,10 @@ from .nuevo_problema import *
 from .menu_problema import *
 
 class resultado:
-    def __init__(self, cant, soluciones, pesos, utilidad, indice = 0):
+    def __init__(self,nom, cant, soluciones, pesos, utilidad, indice = 0):
        
         # Creacion de la ventana solucion
+        self.nom =nom
         self.soluciones=soluciones
         self.cant=cant
         self.utilidad=utilidad
@@ -16,9 +17,9 @@ class resultado:
         print(self.pesos)
         self.indice = indice
         self.ventana = Tk()
-        self.x=420
+        self.x=550
         self.y=250
-        if(self.cant >=2 and self.cant<=7):
+        if(self.cant >=2 and self.cant<=6):
             self.x = self.x + (1*self.cant )
             self.y = self.y + (20*self.cant )
         else:
@@ -50,7 +51,7 @@ class resultado:
 
     def actualizar_ventana(self):
         self.ventana.destroy()
-        self.__init__(self.cant, self.soluciones, self.pesos, self.utilidad, self.indice)
+        self.__init__(self.nom,self.cant, self.soluciones, self.pesos, self.utilidad, self.indice)
 
     def sgte_solucion(self):
         self.indice += 1
@@ -61,7 +62,7 @@ class resultado:
         self.actualizar_ventana()
 
     def renderizar_soluciones(self):
-        datos_sol = f'Solucion: {self.indice + 1} \nUtilidad total de las soluciones: {self.utilidad} \nProducto         Cantidad           Peso           Utilidad'
+        datos_sol = f'Nombre del problema: {self.nom}\nSolucion: {self.indice + 1} \nUtilidad total de las soluciones: {self.utilidad} \nProducto            Cantidad                 Peso                Utilidad'
         etiqueta_sol=Label(self.ventana, text=datos_sol, bg="linen")
         self.matriz = Frame(self.ventana)
         self.renderizar_matriz()
@@ -75,9 +76,11 @@ class resultado:
         solucion = self.soluciones[self.indice]
         for r in range(0,self.cant):
             for c in range(0,4):
-                celda = Label(self.matriz, width=8)
+                celda = Label(self.matriz, width=12)
                 celda.grid(padx=5, pady=5, row=r, column=c)
                 celda.config(fg="white",    # letra
                             bg="skyblue",   # caja
                             font=("Verdana",12),
                             text=solucion[r][c])
+
+    

@@ -1,4 +1,4 @@
-from Etapa import Etapa
+from .Etapa import Etapa
 from copy import deepcopy
 
 class Mochila:

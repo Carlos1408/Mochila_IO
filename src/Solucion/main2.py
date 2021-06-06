@@ -1,5 +1,5 @@
-from Mochila import Mochila
-from Item import Item
+from .Mochila import Mochila
+from .Item import Item
 ## Introduccion de datos al problema
 ## Atributos de item: nombre, peso, utilidad
 items = [Item('Producto 1', 2, 3),
