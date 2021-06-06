@@ -4,7 +4,7 @@ import os
 import src.principal
 import src.nuevo_problema
 # import src.ingreso_datos
-from .ingreso_datos import ingreso_datos
+import src.ingreso_datos
 
 from ast import literal_eval
 # import src.Solucion.PDF
@@ -65,7 +65,7 @@ class menu_problema:
             print(contenido)
             archivo.close()
         print('RECUPERACION DE DATOS')
-        ingreso_datos(0, 0, 0, literal_eval(contenido))
+        src.ingreso_datos.ingreso_datos(0, 0, 0, literal_eval(contenido))
         
 
     def salir(self):

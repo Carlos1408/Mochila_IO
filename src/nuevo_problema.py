@@ -1,6 +1,5 @@
 from tkinter import *
-from .ingreso_datos import ingreso_datos
-# from principal import principal
+import src.ingreso_datos
 
 class nuevo_problema:
 
@@ -47,15 +46,12 @@ class nuevo_problema:
         self.ok.grid(column=0,row=5,padx=1,pady=4)
 
         #Boton cancelar
-        self.cancelar=Button(self.ventana, text="Cancelar",command = self.cancelar)
-        self.cancelar.grid(column=1,row=5,padx=4,pady=4)
+        self.salir=Button(self.ventana, text="Salir",command = self.ventana.quit)
+        self.salir.grid(column=1,row=5,padx=4,pady=4)
 
         self.ventana.mainloop()
 
     #Creacion de otras Ventanas
-    def cancelar(self):
-        self.ventana.destroy()
-            
 
     def generar_ingreso_datos(self):
         cantidad = self.caja_cantidad.get()
@@ -65,5 +61,5 @@ class nuevo_problema:
         print('CAPACIDAD ', capacidad)
         print('NOMBRE ', nombre)
         self.ventana.destroy()
-        ingreso_datos(cantidad, capacidad, nombre)
+        src.ingreso_datos.ingreso_datos(cantidad, capacidad, nombre)
         

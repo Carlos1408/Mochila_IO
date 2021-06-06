@@ -1,7 +1,11 @@
 from tkinter import *
 from tkinter import filedialog as fd
 import os
-# from .nuevo_problema import nuevo_problema
+import src.ingreso_datos
+from .nuevo_problema import nuevo_problema
+from ast import literal_eval
+from .Manual_usuario import manual_usuario
+from .Acerca_de import acerca_de
 
 class principal:
     def __init__(self):
@@ -9,8 +13,8 @@ class principal:
         # Creacion de la ventana principal
         
         self.principal = Tk()
-        ancho=600
-        alto=400
+        ancho=400
+        alto=350
         x=self.principal.winfo_screenwidth()// 2 - ancho // 2
         y=self.principal.winfo_screenheight()// 2 - alto // 2
         self.principal.geometry(f'{ancho}x{alto}+{x}+{y}')
@@ -19,39 +23,40 @@ class principal:
         self.principal.iconbitmap("src/Imagenes/mochila.ico")
         self.principal.config(bg="thistle1",)
 
-        # Creacion de la barra de menus
-        self.barra_menu = Menu(self.principal)
-
-        # # Creacion de menus
-        self.archivo = Menu(self.barra_menu,tearoff=0)
-        self.acerca_de = Menu(self.barra_menu,tearoff=0)
-
-        # # Creacion de los comandos para menu archivo
-        self.archivo.add_command(label="Nuevo Problema", command=self.abrir_nuevo)
-        self.archivo.add_command(label="Cargar problema", command= self.recuperar)
-        self.archivo.add_separator()
-        self.archivo.add_command(label="Salir",command=self.principal.quit)
-
-        # # Agregar los menus a la barra de menus
-        self.barra_menu.add_cascade(label="Archivo", menu=self.archivo)
-        self.barra_menu.add_cascade(label="Acerca de", menu=self.acerca_de)
-
-        # # Agregar la barra a principal
-        self.principal.config(menu=self.barra_menu)
-
+        #Creacion Botones
+        self.nuevo=Button(self.principal, text="Nuevo Problema",command=self.nuevo)
+        self.nuevo.pack(pady=15)
+        self.cargar=Button(self.principal, text="Cargar Problema",command=self.recuperar)
+        self.cargar.pack(pady=15)
+        self.manual=Button(self.principal, text="Manual de Usuario",command=self.manual)
+        self.manual.pack(pady=15)
+        self.acerca=Button(self.principal, text="Acerca de",command=self.acerca)
+        self.acerca.pack(pady=15)
+        self.salir=Button(self.principal, text="salir", command=self.principal.quit)
+        self.salir.pack(side=RIGHT,padx=15)
+        
         self.principal.mainloop()
 
-
-    #Creacion de otras funciones
-    def abrir_nuevo(self):
+    def nuevo(self):
         self.principal.destroy()
-        # nuevo_problema()
-
+        nuevo_problema()
 
     def recuperar(self):
         nombre_archivo=fd.askopenfilename(initialdir = os.getcwd() ,title = "Seleccione archivo",filetypes = (("txt files","*.txt"),("todos los archivos","*.*")))
         if nombre_archivo!='':
             archivo=open(nombre_archivo, "r", encoding="utf-8")
             contenido=archivo.read()
+            print(contenido)
             archivo.close()
-            
+        print('RECUPERACION DE DATOS')
+        src.ingreso_datos.ingreso_datos(0, 0, 0, literal_eval(contenido))
+
+    def manual(self):
+        # self.principal.destroy()
+        manual_usuario()
+
+    def acerca(self):
+        # self.principal.destroy()
+        acerca_de()
+        
+        

@@ -1,9 +1,16 @@
 from tkinter import *
-from .nuevo_problema import *
-from .menu_problema import *
+from tkinter import filedialog as fd
+import os
+import src.nuevo_problema
+import src.Manual_usuario
+import src.Acerca_de
+from src.Solucion.Mochila import Mochila
+from src.Solucion.Item import Item
+from src.Solucion.PDF import generarPDF
+# from .menu_problema import *
 
 class resultado:
-    def __init__(self,nom, cant, soluciones, pesos, utilidad, formulacion, indice = 0):
+    def __init__(self,nom, cant, soluciones, pesos, utilidad,pdf, formulacion, indice = 0):
        
         # Creacion de la ventana solucion
         self.nom =nom
@@ -13,6 +20,7 @@ class resultado:
         self.pesos=pesos
         self.formulacion = formulacion
         self.indice = indice
+        self.form_pdf=pdf
 
         self.ventana = Tk()
         self.x=550
@@ -32,8 +40,38 @@ class resultado:
         self.ventana.title("Asignacion caso mochila")
         self.ventana.config(bg="linen")
 
-        #Llamada al menu problema
-        menu_problema(self.ventana, self.formulacion)
+        # Creacion de la barra de menus
+        barra_menu = Menu(self.ventana)
+
+        # Creacion de menus
+        archivo = Menu(barra_menu, tearoff=0)
+        exportar = Menu(barra_menu,tearoff=0)
+        ayuda = Menu(barra_menu,tearoff=0)
+
+        # Creacion de los comandos para menu archivo
+        archivo.add_command(label="Nuevo Problema",command=self.nuevo)
+        archivo.add_command(label="Guardar", command=self.guardar)
+        archivo.add_separator()
+        archivo.add_command(label="Salir",command=self.ventana.quit)
+
+        # Creacion de los comandos para menu exportar
+        exportar.add_command(label="Como PDF",command=self.pdf)
+
+        # Creacion de los comandos para menu ayuda
+        ayuda.add_command(label="Manual de uso",command=self.manual)
+        ayuda.add_separator()
+        ayuda.add_command(label="Acerca de",command=self.acerca)
+
+        # Agregar los menus a la barra de menus
+        barra_menu.add_cascade(label="Archivo", menu=archivo)
+        barra_menu.add_cascade(label="Exportar", menu=exportar)
+        barra_menu.add_cascade(label="Ayuda", menu=ayuda)
+        
+        # Agregar la barra a principal
+        self.ventana.config(menu=barra_menu)
+
+        # #Llamada al menu problema
+        # menu_problema(self.ventana, self.formulacion)
        
         self.renderizar_soluciones()
 
@@ -82,3 +120,26 @@ class resultado:
                             text=solucion[r][c])
 
     
+    def guardar(self):
+            nombre_archivo=fd.asksaveasfilename(initialdir = os.getcwd() ,title = "Guardar como",filetypes = (("txt files","*.txt"),("todos los archivos","*.*")))
+            if nombre_archivo!='':
+                archivo=open(nombre_archivo + ".txt", "w", encoding="utf-8")
+                archivo.write(self.formulacion)
+                archivo.close()
+    
+    
+    def nuevo(self):
+        self.ventana.destroy()
+        src.nuevo_problema.nuevo_problema()
+
+    def manual(self):
+        # self.ventana.destroy()
+        src.Manual_usuario.manual_usuario()
+
+    def acerca(self):
+        # self.ventana.destroy()
+        src.Acerca_de.acerca_de()
+    
+    def pdf(self):
+        nombre=f'{self.nom}.pdf'
+        generarPDF(nombre,self.form_pdf,self.soluciones,self.utilidad)
