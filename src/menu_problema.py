@@ -3,11 +3,16 @@ from tkinter import filedialog as fd
 import os
 import src.principal
 import src.nuevo_problema
-import src.ingreso_datos
+# import src.ingreso_datos
+from .ingreso_datos import ingreso_datos
+
+from ast import literal_eval
 # import src.Solucion.PDF
 
 class menu_problema:
-    def __init__(self,v):
+    def __init__(self,v, problema = None):
+
+        self.formulacion = problema
 
         self.ven= Tk()
         self.ven.destroy()
@@ -44,15 +49,11 @@ class menu_problema:
         # Agregar la barra a principal
         self.ven.config(menu=barra_menu)
 
-
-
-
     def guardar(self):
             nombre_archivo=fd.asksaveasfilename(initialdir = os.getcwd() ,title = "Guardar como",filetypes = (("txt files","*.txt"),("todos los archivos","*.*")))
             if nombre_archivo!='':
                 archivo=open(nombre_archivo + ".txt", "w", encoding="utf-8")
-                print(str(src.ingreso_datos.ingreso_datos.datos()))
-                archivo.write(str(src.ingreso_datos.ingreso_datos.datos()))
+                archivo.write(self.formulacion)
                 archivo.close()
                
 
@@ -61,7 +62,11 @@ class menu_problema:
         if nombre_archivo!='':
             archivo=open(nombre_archivo, "r", encoding="utf-8")
             contenido=archivo.read()
+            print(contenido)
             archivo.close()
+        print('RECUPERACION DE DATOS')
+        ingreso_datos(0, 0, 0, literal_eval(contenido))
+        
 
     def salir(self):
         self.ven.destroy()
