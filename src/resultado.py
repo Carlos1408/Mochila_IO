@@ -38,7 +38,8 @@ class resultado:
         self.ventana.geometry(f'{self.x}x{self.y}+{self.x1}+{self.y1}')
         self.ventana.resizable(0,0)
         self.ventana.title("Asignacion caso mochila")
-        self.ventana.config(bg="linen")
+        self.ventana.iconbitmap("src/Imagenes/mochila.ico")
+        self.ventana.config(bg="gray12")
 
         # Creacion de la barra de menus
         barra_menu = Menu(self.ventana)
@@ -77,8 +78,8 @@ class resultado:
 
         estado_btn_sgte = DISABLED if self.indice == len(self.soluciones)-1 else ACTIVE
         estado_btn_ant = DISABLED if self.indice == 0 else ACTIVE
-        self.btn_anterior=Button(self.ventana, text="anterior",bg="lavender", command=self.ant_solucion, state=estado_btn_ant)
-        self.btn_siguiente=Button(self.ventana, text="siguiente",bg="lavender", command=self.sgte_solucion, state=estado_btn_sgte)
+        self.btn_anterior=Button(self.ventana, text="anterior",bg="gray12", command=self.ant_solucion, state=estado_btn_ant,fg="turquoise3")
+        self.btn_siguiente=Button(self.ventana, text="siguiente",bg="gray12", command=self.sgte_solucion, state=estado_btn_sgte,fg="turquoise3")
         self.btn_anterior.pack(side=LEFT,padx=65,pady=15)
         self.btn_siguiente.pack(side=RIGHT,padx=70,pady=15)
 
@@ -87,7 +88,7 @@ class resultado:
 
     def actualizar_ventana(self):
         self.ventana.destroy()
-        self.__init__(self.nom,self.cant, self.soluciones, self.pesos, self.utilidad, self.indice)
+        self.__init__(self.nom,self.cant, self.soluciones, self.pesos, self.utilidad, self.form_pdf,self.formulacion,self.indice)
 
     def sgte_solucion(self):
         self.indice += 1
@@ -99,10 +100,10 @@ class resultado:
 
     def renderizar_soluciones(self):
         datos_sol = f'Nombre del problema: {self.nom}\nSolucion: {self.indice + 1} \nUtilidad total de las soluciones: {self.utilidad} \nProducto            Cantidad                 Peso                Utilidad'
-        etiqueta_sol=Label(self.ventana, text=datos_sol, bg="linen")
-        self.matriz = Frame(self.ventana)
+        etiqueta_sol=Label(self.ventana, text=datos_sol, bg="gray12",fg="turquoise3")
+        self.matriz = Frame(self.ventana,bg="gray54")
         self.renderizar_matriz()
-        self.etiqueta_peso =Label(self.ventana,bg="linen")
+        self.etiqueta_peso =Label(self.ventana,bg="gray12",fg="turquoise3")
         self.etiqueta_peso.config(text = f'Peso usado: {self.pesos[self.indice]}')
         etiqueta_sol.pack()
         self.matriz.pack()
@@ -113,9 +114,9 @@ class resultado:
         for r in range(0,self.cant):
             for c in range(0,4):
                 celda = Label(self.matriz, width=12)
-                celda.grid(padx=5, pady=5, row=r, column=c)
-                celda.config(fg="white",    # letra
-                            bg="skyblue",   # caja
+                celda.grid(padx=1, pady=1, row=r, column=c)
+                celda.config(fg="turquoise3",    # letra
+                            bg="gray12",   # caja
                             font=("Verdana",12),
                             text=solucion[r][c])
 

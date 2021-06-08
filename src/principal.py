@@ -7,6 +7,7 @@ from ast import literal_eval
 from .Manual_usuario import manual_usuario
 from .Acerca_de import acerca_de
 
+
 class principal:
     def __init__(self):
             
@@ -21,18 +22,18 @@ class principal:
         self.principal.resizable(0,0)
         self.principal.title("Ventana principal")
         self.principal.iconbitmap("src/Imagenes/mochila.ico")
-        self.principal.config(bg="thistle1",)
+        self.principal.config(bg="gray12")
 
         #Creacion Botones
-        self.nuevo=Button(self.principal, text="Nuevo Problema",command=self.nuevo)
+        self.nuevo=Button(self.principal, text="Nuevo Problema",command=self.nuevo,bg="gray12",fg="turquoise3",width=25)
         self.nuevo.pack(pady=15)
-        self.cargar=Button(self.principal, text="Cargar Problema",command=self.recuperar)
+        self.cargar=Button(self.principal, text="Cargar Problema",command=self.recuperar,bg="gray12",fg="turquoise3",width=25)
         self.cargar.pack(pady=15)
-        self.manual=Button(self.principal, text="Manual de Usuario",command=self.manual)
+        self.manual=Button(self.principal, text="Manual de Usuario",command=self.manual,bg="gray12",fg="turquoise3",width=25)
         self.manual.pack(pady=15)
-        self.acerca=Button(self.principal, text="Acerca de",command=self.acerca)
+        self.acerca=Button(self.principal, text="Acerca de",command=self.acerca,bg="gray12",fg="turquoise3",width=25)
         self.acerca.pack(pady=15)
-        self.salir=Button(self.principal, text="salir", command=self.principal.quit)
+        self.salir=Button(self.principal, text="salir", command=self.principal.quit,bg="gray12",fg="turquoise3",width=12)
         self.salir.pack(side=RIGHT,padx=15)
         
         self.principal.mainloop()
@@ -53,7 +54,8 @@ class principal:
 
     def manual(self):
         # self.principal.destroy()
-        manual_usuario()
+        path = 'src/Solucion/Anvorgueso.pdf'
+        os.system(path)
 
     def acerca(self):
         # self.principal.destroy()

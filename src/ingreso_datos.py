@@ -36,7 +36,8 @@ class ingreso_datos:
         self.ventana.geometry(f'{self.x}x{self.y}+{self.x1}+{self.y1}')
         self.ventana.resizable(0,0)
         self.ventana.title("Asignacion caso mochila")
-        self.ventana.config(bg="linen")
+        self.ventana.iconbitmap("src/Imagenes/mochila.ico")
+        self.ventana.config(bg="gray12")
       
 
          # Creacion de la barra de menus
@@ -68,20 +69,20 @@ class ingreso_datos:
         self.etiquetas_datos()
 
         # Creacion del marco matriz
-        self.matriz_problema = Frame(self.ventana)
+        self.matriz_problema = Frame(self.ventana,bg="gray12")
         self.genera_matriz()
         if not self.formulacion is None:
             self.auto_completar()
         self.matriz_problema.pack()
 
         #Boton cancelar
-        self.cancelar=Button(self.ventana, text="Cancelar",command=self.cancelar,bg="lavender")
+        self.cancelar=Button(self.ventana, text="Cancelar",command=self.cancelar,bg="gray12",fg="turquoise3")
         self.cancelar.pack(side=LEFT,padx=65,pady=15)
         
 
         #Boton correr
         # self.ok=Button(self.ventana, text="Correr",command=self.get_datos_tabla,bg="lavender")
-        self.ok=Button(self.ventana, text="Correr",command=self.solucionar_problema,bg="lavender")
+        self.ok=Button(self.ventana, text="Correr",command=self.solucionar_problema,bg="gray12",fg="turquoise3")
         self.ok.pack(side=RIGHT,padx=70,pady=15)
         
         self.ventana.mainloop()
@@ -92,12 +93,13 @@ class ingreso_datos:
         for r in (range(0,self.cant)):
             fila = []
             for c in range(0, 3):
-                celda = Entry(self.matriz_problema, width=12)
-                celda.grid(padx=5, pady=5, row=r, column=c)
-                celda.config(fg="white",    # letras
-                            bg="skyblue",   # fondo
+                self.celda = Entry(self.matriz_problema, width=12)
+                self.validar(c)
+                self.celda.grid(padx=1, pady=1, row=r, column=c)
+                self.celda.config(fg="turquoise3",    # letras
+                            bg="gray12",   # fondo
                             font=("Verdana",12))
-                fila.append(celda)
+                fila.append(self.celda)
             self.matriz.append(fila)
 
     
@@ -146,16 +148,16 @@ class ingreso_datos:
 
     def etiquetas_datos(self):
 
-        self.etq_nombre=Label(self.ventana, text=f'Nombre del problema : {self.nom}',bg="linen")
+        self.etq_nombre=Label(self.ventana, text=f'Nombre del problema : {self.nom}',bg="gray12",fg="turquoise3")
         self.etq_nombre.pack(side=TOP)
 
-        self.etq_capacidad=Label(self.ventana, text=f'Capacidad de la mochila : {self.cap}',bg="linen")
+        self.etq_capacidad=Label(self.ventana, text=f'Capacidad de la mochila : {self.cap}',bg="gray12",fg="turquoise3")
         self.etq_capacidad.pack(side=TOP)
         
-        self.etq_cantidad=Label(self.ventana, text=f'Cantidad de articulos : {self.cant}',bg="linen")
+        self.etq_cantidad=Label(self.ventana, text=f'Cantidad de articulos : {self.cant}',bg="gray12",fg="turquoise3")
         self.etq_cantidad.pack(side=TOP)
 
-        self.etq_datos=Label(self.ventana, text="      Articulos                Peso                     Utilidad",bg="linen")
+        self.etq_datos=Label(self.ventana, text="      Articulos                Peso                     Utilidad",bg="gray12",fg="turquoise3")
         self.etq_datos.pack(side=TOP)
 
     def nuevo(self):
@@ -170,5 +172,12 @@ class ingreso_datos:
         # self.ventana.destroy()
         src.Acerca_de.acerca_de()
     
+    def validar(self,c):
+        if not c == 0:
+            self.celda.config(validate="key",validatecommand=(self.matriz_problema.register(self.validar_entry), "%S")) 
 
-    
+
+
+    def validar_entry(self,text):
+    # solo numeros
+        return text.isdigit()
