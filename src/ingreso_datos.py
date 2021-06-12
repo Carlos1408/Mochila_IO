@@ -1,10 +1,9 @@
 from tkinter import *
-# from .menu_problema import menu_problema
+import os
 from .resultado import resultado
 import src.nuevo_problema
 from .Solucion.Mochila import Mochila
 from .Solucion.Item import Item
-import src.Manual_usuario
 import src.Acerca_de
 
 class ingreso_datos:
@@ -18,6 +17,7 @@ class ingreso_datos:
             self.cant = self.formulacion['cantidad_items']
             self.cap = self.formulacion['capacidad']
             self.nom = self.formulacion['nombre']
+       
         # Creacion de la ventana problema
         self.x=420
         self.y=250
@@ -50,8 +50,7 @@ class ingreso_datos:
         # Creacion de los comandos para menu archivo
         archivo.add_command(label="Nuevo Problema",command=self.nuevo)
         archivo.add_separator()
-        archivo.add_command(label="Salir",command=self.ventana.quit)
-
+        archivo.add_command(label="Salir",command=self.cancelar)
 
         # Creacion de los comandos para menu ayuda
         ayuda.add_command(label="Manual de uso",command=self.manual)
@@ -79,15 +78,13 @@ class ingreso_datos:
         self.cancelar=Button(self.ventana, text="Cancelar",command=self.cancelar,bg="gray12",fg="turquoise3")
         self.cancelar.pack(side=LEFT,padx=65,pady=15)
         
-
         #Boton correr
-        # self.ok=Button(self.ventana, text="Correr",command=self.get_datos_tabla,bg="lavender")
         self.ok=Button(self.ventana, text="Correr",command=self.solucionar_problema,bg="gray12",fg="turquoise3")
         self.ok.pack(side=RIGHT,padx=70,pady=15)
         
         self.ventana.mainloop()
 
-# Creacion de la funcion que genera la matriz 
+    # Creacion de la funcion que genera la matriz 
     def genera_matriz(self):
         self.matriz = []
         for r in (range(0,self.cant)):
@@ -96,17 +93,18 @@ class ingreso_datos:
                 self.celda = Entry(self.matriz_problema, width=12)
                 self.validar(c)
                 self.celda.grid(padx=1, pady=1, row=r, column=c)
-                self.celda.config(fg="turquoise3",    # letras
-                            bg="gray12",   # fondo
+                self.celda.config(fg="gray12",    # letras
+                            bg="turquoise3",   # fondo
                             font=("Verdana",12))
                 fila.append(self.celda)
             self.matriz.append(fila)
 
-    
+    #Creacion de la funcion que genera la ventana solucion
     def generar_ventana_solucion(self, soluciones, pesos, utilidad, formulacion,f_pdf):
         print("self cantidad ",self.cant)
         resultado(self.nom,self.cant, soluciones, pesos, utilidad, f_pdf, formulacion)
-        
+
+    #Creacion de las funciones que trabajan para sacar la solucion del problema    
     def get_datos_tabla(self):
         nombres = []
         pesos = []
@@ -124,7 +122,6 @@ class ingreso_datos:
                 celda.insert(0, dato)
 
     def solucionar_problema(self):
-        # self.auto_completar()
         nombres, pesos, utilidades = self.get_datos_tabla()
         items = []
         for n, p, u in zip(nombres, pesos, utilidades):
@@ -165,19 +162,18 @@ class ingreso_datos:
         src.nuevo_problema.nuevo_problema()
 
     def manual(self):
-        # self.ventana.destroy()
-        src.Manual_usuario.manual_usuario()
+        wd = os.getcwd()
+        for i in range(len(wd)): 
+            wd[i].replace("/","'\'")
+        m=f'{wd}/Manual.pdf'
+        os.system(m)
 
     def acerca(self):
-        # self.ventana.destroy()
         src.Acerca_de.acerca_de()
     
     def validar(self,c):
         if not c == 0:
             self.celda.config(validate="key",validatecommand=(self.matriz_problema.register(self.validar_entry), "%S")) 
 
-
-
     def validar_entry(self,text):
-    # solo numeros
         return text.isdigit()

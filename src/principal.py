@@ -4,7 +4,6 @@ import os
 import src.ingreso_datos
 from .nuevo_problema import nuevo_problema
 from ast import literal_eval
-from .Manual_usuario import manual_usuario
 from .Acerca_de import acerca_de
 
 
@@ -33,13 +32,14 @@ class principal:
         self.manual.pack(pady=15)
         self.acerca=Button(self.principal, text="Acerca de",command=self.acerca,bg="gray12",fg="turquoise3",width=25)
         self.acerca.pack(pady=15)
-        self.salir=Button(self.principal, text="salir", command=self.principal.quit,bg="gray12",fg="turquoise3",width=12)
+        self.salir=Button(self.principal, text="salir", command=self.salir,bg="gray12",fg="turquoise3",width=12)
         self.salir.pack(side=RIGHT,padx=15)
+
         
         self.principal.mainloop()
 
+    #Creacion de otras funciones    
     def nuevo(self):
-        self.principal.destroy()
         nuevo_problema()
 
     def recuperar(self):
@@ -52,13 +52,17 @@ class principal:
         print('RECUPERACION DE DATOS')
         src.ingreso_datos.ingreso_datos(0, 0, 0, literal_eval(contenido))
 
+    def salir(self):
+        self.principal.destroy()
+    
     def manual(self):
-        # self.principal.destroy()
-        path = 'src/Solucion/Anvorgueso.pdf'
-        os.system(path)
+        wd =os.getcwd() 
+        for i in range(len(wd)): 
+            wd[i].replace("/","'\'")
+        m=f'{wd}/Manual.pdf'
+        os.system(m)
 
     def acerca(self):
-        # self.principal.destroy()
         acerca_de()
         
         

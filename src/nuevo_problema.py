@@ -17,6 +17,7 @@ class nuevo_problema:
         self.ventana.iconbitmap("src/Imagenes/mochila.ico")
         self.ventana.config(bg="gray12")
 
+
         #Etiqueta nombre problema
         self.nombre=Label(self.ventana, text="Nombre del problema",bg="gray12",fg="turquoise3")
         self.nombre.grid(column=0,row=0,padx=8,pady=8)
@@ -24,6 +25,7 @@ class nuevo_problema:
         #Caja de texto nombre problema
         self.texto_nombre=Entry(self.ventana)
         self.texto_nombre.grid(column=1,row=0,padx=8,pady=8)
+        
 
 
         #Etiqueta capacidad
@@ -47,7 +49,7 @@ class nuevo_problema:
         self.ok.grid(column=0,row=5,padx=1,pady=8)
 
         #Boton cancelar
-        self.salir=Button(self.ventana, text="Salir",command = self.ventana.quit,bg="gray12",fg="turquoise3",width=15)
+        self.salir=Button(self.ventana, text="Salir",command = self.salir,bg="gray12",fg="turquoise3",width=15)
         self.salir.grid(column=1,row=5,padx=4,pady=8)
 
         self.ventana.mainloop()
@@ -64,8 +66,10 @@ class nuevo_problema:
         self.ventana.destroy()
         src.ingreso_datos.ingreso_datos(int(cantidad), int(capacidad), nombre)
 
+    def salir(self):
+        self.ventana.destroy()
+
     def validar_entry(self,text):
-    # solo numeros
         return text.isdecimal()    
 
     def llenado(self):
@@ -75,3 +79,5 @@ class nuevo_problema:
            nuevo_problema()
         else:
             self.generar_ingreso_datos()
+
+

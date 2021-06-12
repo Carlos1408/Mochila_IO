@@ -1,1 +1,0 @@
-{'nombre': 'asd', 'capacidad': 34, 'cantidad_items': 2, 'items': [('p1', 3, 2), ('p2', 6, 7)]}

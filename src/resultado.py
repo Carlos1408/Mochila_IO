@@ -2,12 +2,9 @@ from tkinter import *
 from tkinter import filedialog as fd
 import os
 import src.nuevo_problema
-import src.Manual_usuario
 import src.Acerca_de
-from src.Solucion.Mochila import Mochila
-from src.Solucion.Item import Item
 from src.Solucion.PDF import generarPDF
-# from .menu_problema import *
+from tkinter import messagebox as mb
 
 class resultado:
     def __init__(self,nom, cant, soluciones, pesos, utilidad,pdf, formulacion, indice = 0):
@@ -53,7 +50,7 @@ class resultado:
         archivo.add_command(label="Nuevo Problema",command=self.nuevo)
         archivo.add_command(label="Guardar", command=self.guardar)
         archivo.add_separator()
-        archivo.add_command(label="Salir",command=self.ventana.quit)
+        archivo.add_command(label="Salir",command=self.salir)
 
         # Creacion de los comandos para menu exportar
         exportar.add_command(label="Como PDF",command=self.pdf)
@@ -70,9 +67,6 @@ class resultado:
         
         # Agregar la barra a principal
         self.ventana.config(menu=barra_menu)
-
-        # #Llamada al menu problema
-        # menu_problema(self.ventana, self.formulacion)
        
         self.renderizar_soluciones()
 
@@ -85,7 +79,7 @@ class resultado:
 
         self.ventana.mainloop()
 
-
+    #Creacion de funciones para la solucion del problema
     def actualizar_ventana(self):
         self.ventana.destroy()
         self.__init__(self.nom,self.cant, self.soluciones, self.pesos, self.utilidad, self.form_pdf,self.formulacion,self.indice)
@@ -120,25 +114,30 @@ class resultado:
                             font=("Verdana",12),
                             text=solucion[r][c])
 
-    
+    #Creacion de otras funciones
     def guardar(self):
             nombre_archivo=fd.asksaveasfilename(initialdir = os.getcwd() ,title = "Guardar como",filetypes = (("txt files","*.txt"),("todos los archivos","*.*")))
             if nombre_archivo!='':
                 archivo=open(nombre_archivo + ".txt", "w", encoding="utf-8")
                 archivo.write(self.formulacion)
                 archivo.close()
+            mb.showwarning(title="Alerta",message="¡No editar el documento guardado!")
     
-    
+    def salir(self):
+        self.ventana.destroy()
+     
     def nuevo(self):
         self.ventana.destroy()
         src.nuevo_problema.nuevo_problema()
 
     def manual(self):
-        # self.ventana.destroy()
-        src.Manual_usuario.manual_usuario()
+        wd = os.getcwd()
+        for i in range(len(wd)): 
+            wd[i].replace("/","'\'")
+        m=f'{wd}/Manual.pdf'
+        os.system(m)
 
     def acerca(self):
-        # self.ventana.destroy()
         src.Acerca_de.acerca_de()
     
     def pdf(self):
