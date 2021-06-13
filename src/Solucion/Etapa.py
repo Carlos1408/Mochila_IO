@@ -23,16 +23,16 @@ class Etapa:
             col += 1
         return col
     
+    def generar_origenes(self):
+        aux = [[-1]]
+        for i in range(self.min_x, self.max_x+1):
+            aux.append([i])
+        return np.array(aux)
+
     def generar_destinos(self):
         if self.min_x == self.max_x and self.sig_min == 0:
             return np.arange(0, self.cantidad_columnas()) * self.item.peso
         return np.arange(0 if self.min_x == 0 else 1, self.cantidad_columnas()) * self.item.peso
-    
-    def generar_origenes(self):
-        aux = [[-1]]
-        for i in list(range(self.min_x, self.max_x+1)):
-            aux.append([i])
-        return np.array(aux)
     
     def generar_utilidades(self):
         if self.min_x == self.max_x and self.sig_min == 0:
@@ -56,18 +56,18 @@ class Etapa:
         
         self.inicializar_celdas()
         
-    def get_origenes(self):
-        return self.matriz[1:, 0].T
-        
     def inicializar_celdas(self):
         for i in range(1, len(self.matriz[:, 0])):
             for j in range(1, len(self.matriz[0, :])):
                 self.matriz[i, j] = self.utilidades[j-1] if self.matriz[i, 0] - self.matriz[0, j] >= self.sig_min else -1
-                    
+
+    def get_origenes(self):
+        return self.matriz[1:, 0].T
+
     def transicion(self, prev_fun_max):
         indice = 0
         if self.min_x == self.max_x:
-                prev_fun_max = prev_fun_max[::-1]
+                prev_fun_max.reverse()
         for j in range(1, len(self.matriz[0, :])):
             if self.min_x != self.max_x:
                 indice = 0
@@ -77,27 +77,16 @@ class Etapa:
                     indice += self.item.peso if self.max_x == self.min_x else 1
     
     def get_fun_max(self):
-        fun_max = [max(fila) for fila in self.matriz[1:, 1:]]
-        fun_max = np.array(fun_max)
-        return fun_max
-    
+        return [max(fila) for fila in self.matriz[1:, 1:]]
+
     def genera_destinos_optimos(self):
         fun_max = self.get_fun_max()
-        maximos = []
         destinos_op = []
-        i = 0
-        for fila in self.matriz[1:, 1:]:
+        for i, fila in enumerate(self.matriz[1:, 1:]):
             maximo = np.where(fila == fun_max[i])[0]
-            maximos.append(maximo)
-            destino = []
-            for m in maximo:
-                destino.append(self.matriz[0, m+1])
+            destino = [self.matriz[0, m+1] for m in maximo]
             destinos_op.append(destino)
-            i+=1
         self.destinos_op = destinos_op
-        
-    def get_destino_op(self):
-        return self.destinos_op
     
     def get_destino_sol(self, prev_residuo):
         indice = np.where(self.get_origenes() == prev_residuo)[0]

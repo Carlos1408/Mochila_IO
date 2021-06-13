@@ -112,7 +112,7 @@ class PDF(object):
             ]))
         #===========================================================================================
         historia.append(Spacer(1, 0.30 * inch))
-        I = Image('mochila.png',100,100)
+        I = Image('src/imagenes/mochila.png',100,100)
        
         historia.append(I)
 
@@ -161,7 +161,7 @@ class PDF(object):
         try:
             archivoPDF.build(historia, onFirstPage=self._encabezadoPiePagina,
                              onLaterPages=self._encabezadoPiePagina,
-                             canvasmaker=numeracionPaginas)
+                             canvasmaker=numeracionPaginas, )
             
          # +------------------------------------+
             return "PDF generado con éxito."

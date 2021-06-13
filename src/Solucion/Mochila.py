@@ -6,6 +6,9 @@ class Mochila:
         self.capacidad = capacidad
         self.items = items
         self.etapas = []
+    
+    def set_nombre(self, nombre_problema):
+        self.nombre_problema = nombre_problema
         
     def suma_pesos(self):
         tot = 0
@@ -18,10 +21,12 @@ class Mochila:
         self.etapas.append(e)
         
         self.items.reverse()
+
+        suma_pesos = self.suma_pesos()
         
         for item in self.items[1:]:
                 
-            if self.suma_pesos() <= self.capacidad:
+            if suma_pesos <= self.capacidad:
                 min_x = 0
                 indice = self.items.index(item)
                 for i in self.items[::-1][indice:]:
@@ -46,13 +51,13 @@ class Mochila:
     def generar_tablas(self):
         for e in self.etapas:
             e.generar_tabla()
-        
+
     def resolver(self):
         self.generar_tablas()
-        for i in range(len(self.etapas)):
+        for i, etapa in enumerate(self.etapas):
             if i != 0:
-                self.etapas[i].transicion(self.etapas[i-1].get_fun_max())
-            self.etapas[i].genera_destinos_optimos()
+                etapa.transicion(self.etapas[i-1].get_fun_max())
+            etapa.genera_destinos_optimos()
             
         soluciones = self.get_conjunto_solucion()
         self.soluciones = self.normalizar_sol(soluciones)
@@ -65,12 +70,10 @@ class Mochila:
             conj = []
             for camino in conjunto:
                 des = e.get_destino_sol(self.capacidad - sum(camino))
-                # decision = []
                 for d in des:
                     cam = deepcopy(camino)
                     cam.append(d)
                     conj.append(cam)
-                # conj.append(decision[0])
             conjunto = conj
         self.etapas.reverse()
         return conjunto
@@ -89,7 +92,6 @@ class Mochila:
             for j in range(len(soluciones[i])):
                 soluciones[i][j] = int(soluciones[i][j] / self.items[j].peso)
         return soluciones
-                
             
     def print_solucion(self):
         tablas = []
@@ -102,13 +104,6 @@ class Mochila:
             tablas.append(tabla)
         self.tabla_sol = tablas
         print(self.tabla_sol)
-        
-    def print_etapas(self):
-        for e in self.etapas:
-            print(e)
-            
-    def print_matrices(self):
-        print(e.matriz for e in self.etapas)
         
     def get_formulacion_problema(self):
         problema = [self.capacidad]
@@ -133,9 +128,6 @@ class Mochila:
                 peso += fila[2]
             pesos.append(peso)
         return tuple(pesos)
-
-    def set_nombre(self, nombre_problema):
-        self.nombre_problema = nombre_problema
 
     def get_formulacion_problema_dicc(self):
        form_prob =  self.get_formulacion_problema
