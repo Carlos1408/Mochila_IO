@@ -1,0 +1,1 @@
+{'nombre': 'Prueba util neta', 'capacidad': 36, 'cantidad_items': 3, 'items': [('Producto 1', 12, 4), ('Producto 2', 5, 2), ('Producto 3', 7, 1)]}

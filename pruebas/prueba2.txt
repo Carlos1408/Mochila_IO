@@ -1,0 +1,1 @@
+{'nombre': 'PruebaPDF', 'capacidad': 76, 'cantidad_items': 4, 'items': [('p1', 5, 6), ('p2', 4, 4), ('p3', 3, 3), ('p4', 5, 7)]}
