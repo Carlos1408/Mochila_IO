@@ -3,7 +3,11 @@ import src.ingreso_datos
 from tkinter import messagebox as mb
 
 class nuevo_problema:
-
+    '''Creacion del constructor donde se realiza la creacion de la ventana,
+       configuracion de su tamaño,colores, icono y posicion de apertura; En
+       la siguiente se creara etiquetas y cuadros de texto donde el usuario 
+       debe ingresar los datos de nombre de problema cantidad y capacidad de 
+       la mochila'''
     def __init__(self):
         # Creacion de la ventana nuevo problema
         self.ventana = Tk()
@@ -69,14 +73,17 @@ class nuevo_problema:
     def salir(self):
         self.ventana.destroy()
 
+    '''Creacion de las funciones de Validacion'''
+    '''La siguiente funcion verifica que un cuadro de texto se llene con decimales 
+        solamente'''
     def validar_entry(self,text):
         return text.isdecimal()    
-
+    '''La siguiente funcion verifica que ningun cuadro de tecto de la ventana este vacio,
+        si el caso fuera vacio manda un mensaje indicando que debe llenar todo, sino 
+        continua normalmente '''
     def llenado(self):
         if self.texto_nombre.get() == "" or self.texto_cantidad.get() == "" or self.texto_capacidad.get()== "" :
            mb.showinfo(message="Debe llenar todos los campos", title="Mensaje")
-           self.ventana.destroy()
-           nuevo_problema()
         else:
             self.generar_ingreso_datos()
 

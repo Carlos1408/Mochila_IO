@@ -5,8 +5,13 @@ import src.nuevo_problema
 from .Solucion.Mochila import Mochila
 from .Solucion.Item import Item
 import src.Acerca_de
+from tkinter import messagebox as mb
 
 class ingreso_datos:
+    '''Creacion del constructor donde se realiza la creacion de la ventana,
+       configuracion de su tamaño,colores, icono y posicion de apertura; Donde el usuario
+       ingresara los datos de su problema de acuerdo a los parametros de nommbre,
+       cantidad y capacidad de la mochila ingresados en la ventana anterior a esta '''
     def __init__(self,cant,cap,nom, formulacion = None):
         self.formulacion = formulacion
         if formulacion is None:
@@ -79,10 +84,17 @@ class ingreso_datos:
         self.cancelar.pack(side=LEFT,padx=65,pady=15)
         
         #Boton correr
-        self.ok=Button(self.ventana, text="Correr",command=self.solucionar_problema,bg="gray12",fg="turquoise3")
+        self.ok=Button(self.ventana, text="Correr",command=self.llenar,bg="gray12",fg="turquoise3")
         self.ok.pack(side=RIGHT,padx=70,pady=15)
         
+        self.validar_vacios()
+
         self.ventana.mainloop()
+
+    '''Creacion de las funciones usadas en esta clase, donde se realizan 
+       las validaciones, creacion de matriz, se conecta con el codigo de 
+       la carpeta Solucion con el cual se resuelve el ejercicio y manda los
+       datos respuesta a una ventana respuesta. '''
 
     # Creacion de la funcion que genera la matriz 
     def genera_matriz(self):
@@ -138,7 +150,7 @@ class ingreso_datos:
         self.ventana.destroy()
         self.generar_ventana_solucion(soluciones, pesos_sol, utilidad_sol, formulacion, f_pdf)
 
-#Creacion de otras Ventanas
+    #Creacion de otras ventanas y etiquetas
     def cancelar(self):
         self.ventana.destroy()
 
@@ -171,9 +183,26 @@ class ingreso_datos:
     def acerca(self):
         src.Acerca_de.acerca_de()
     
+    '''Valida que el texto ingresado en las columnas 1 y 2 de la 
+        matriz, sean solo numeros'''
     def validar(self,c):
         if not c == 0:
             self.celda.config(validate="key",validatecommand=(self.matriz_problema.register(self.validar_entry), "%S")) 
 
+    '''Valida si el texto ingresado es un digito numerico, no permite letras'''
     def validar_entry(self,text):
         return text.isdigit()
+    '''Valida si por lo menos un espacio de la matriz este vacio'''
+    def validar_vacios(self):
+        for fila  in self.matriz:
+            if fila[0].get()=="" or fila[1].get()=="" or fila[2].get()=="":
+                return False
+        return True
+
+    '''Creacion de la funcion que genera un mensaje de llenado si se valida que un campo 
+       este vacio o continua con el funcionamiento normal'''
+    def llenar(self):
+        if not self.validar_vacios():
+           mb.showinfo(message="Debe llenar todos los campos", title="Mensaje")
+        else:
+            self.solucionar_problema()

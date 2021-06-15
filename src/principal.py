@@ -8,10 +8,12 @@ from .Acerca_de import acerca_de
 
 
 class principal:
+    '''Creacion del constructor donde se realiza la creacion de la ventana,
+       configuracion de su tamaño,colores, icono y posicion de apertura; En esta
+       ventana se muestran los botones principales para utilizar la aplicacion'''   
+
     def __init__(self):
             
-        # Creacion de la ventana principal
-        
         self.principal = Tk()
         ancho=400
         alto=350

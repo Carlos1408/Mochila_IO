@@ -1,7 +1,12 @@
 from tkinter import *
 
 class acerca_de:
+    '''Creacion del constructor donde se realiza la creacion de la ventana,
+       configuracion de su tamaño,colores, icono y posicion de apertura;Creacion de 
+       los labels donde se muestran los datos de los integrantes e informacion
+       de las herammientas utilizadas para realizar el proyecto'''
     def __init__(self):
+       
         self.ventana = Tk()
         ancho=600
         alto=600
@@ -27,7 +32,7 @@ class acerca_de:
         integrantes.pack()
  
 
-         #Creacion texto repositorio GitHub
+        #Creacion texto repositorio GitHub
         self.lb_imagenes=Label(self.ventana, text="Repositorio en GitHub",width=30,fg="turquoise3",bg="gray12",font=("Arial",20))
         self.lb_imagenes.pack()
         self.fondo=Entry(self.ventana,width=36)

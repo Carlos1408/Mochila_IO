@@ -7,6 +7,9 @@ from src.Solucion.PDF import generarPDF
 from tkinter import messagebox as mb
 
 class resultado:
+    '''Creacion del constructor donde se realiza la creacion de la ventana,
+       configuracion de su tamaño,colores, icono y posicion de apertura; En 
+       la siguiente ventana se muestra las soluciones del problema '''
     def __init__(self,nom, cant, soluciones, pesos, utilidad,pdf, formulacion, indice = 0):
        
         # Creacion de la ventana solucion
@@ -114,7 +117,7 @@ class resultado:
                             font=("Verdana",12),
                             text=solucion[r][c])
 
-    #Creacion de otras funciones
+    #Creacion de otras funciones para pasar a ventanas
     def guardar(self):
             nombre_archivo=fd.asksaveasfilename(initialdir = os.getcwd() ,title = "Guardar como",filetypes = (("txt files","*.txt"),("todos los archivos","*.*")))
             if nombre_archivo!='':
