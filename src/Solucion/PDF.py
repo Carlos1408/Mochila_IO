@@ -113,7 +113,7 @@ class PDF(object):
             ]))
         #===========================================================================================
         historia.append(Spacer(1, 0.30 * inch))
-        I = Image('mochila.png',100,100)
+        I = Image('../Mochila_IO/src/Imagenes/mochila.png',100,100)
        
         historia.append(I)
 
