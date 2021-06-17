@@ -10,10 +10,9 @@ from reportlab.pdfgen import canvas
 
 # ======================= CLASE PDF =========================
 
-class PDF(object):
-    #Exportar una lista de diccionarios a una tabla en un
-    #archivo PDF.
-    
+# La clase PDF se encarga de crear el documento de la solucion en formato .pdf 
+# Utilizando la libreria "reportlab" 
+class PDF(object):  
     def __init__(self, nombrePDF,formulacion,soluciones,utilidadTotal):
         super(PDF, self).__init__()
 
@@ -24,10 +23,10 @@ class PDF(object):
 
         self.estilos = getSampleStyleSheet()
 
+    # Este procedimiento realiza el encabezado y pie de pagina, 
+    # Obteniendo la fecha actual en formato D-M-Y
     @staticmethod
     def _encabezadoPiePagina(canvas, archivoPDF):
-        #Guarde el estado de nuestro lienzo para que podamos aprovecharlo
-        
         canvas.saveState()
         estilos = getSampleStyleSheet()
 
@@ -54,9 +53,10 @@ class PDF(object):
         # Suelta el lienzo
         canvas.restoreState()
 
+
+    # Esta funcion convierte los datos de la solucion en una lista de listas para crear
+    # la tabla PDF.
     def convertirDatos(self,cabecera,datos):
-        #Convertir la lista de diccionarios a una lista de listas para crear
-        #la tabla PDF.
 
         estiloEncabezado = ParagraphStyle(name="estiloEncabezado", alignment=TA_LEFT,
                                           fontSize=10, textColor=white,
@@ -76,8 +76,9 @@ class PDF(object):
             
         return nuevosDatos
         
-    def Exportar(self):
-        #Exportar los datos a un archivo PDF.
+
+    #  Función que inserta los datos de la formulación del problema y solución en las tablas   
+    def Exportar(self):      
 
         alineacionTitulo = ParagraphStyle(name="centrar", alignment=TA_CENTER, fontSize=13,
                                           leading=10, textColor=black,
@@ -112,7 +113,7 @@ class PDF(object):
             ]))
         #===========================================================================================
         historia.append(Spacer(1, 0.30 * inch))
-        I = Image('src/imagenes/mochila.png',100,100)
+        I = Image('mochila.png',100,100)
        
         historia.append(I)
 
@@ -157,11 +158,11 @@ class PDF(object):
 
         archivoPDF = SimpleDocTemplate(self.nombrePDF, leftMargin=50, rightMargin=50, pagesize=letter,
                                        title="solucion mochila", author="Edwin Diaz")
-        
+        # .build crea el archivo .pdf con los parametros  encabezado,tablas y pie de pagina
         try:
             archivoPDF.build(historia, onFirstPage=self._encabezadoPiePagina,
                              onLaterPages=self._encabezadoPiePagina,
-                             canvasmaker=numeracionPaginas, )
+                             canvasmaker=numeracionPaginas)
             
          # +------------------------------------+
             return "PDF generado con éxito."
@@ -170,7 +171,10 @@ class PDF(object):
          # +--------------------------------------------+  
             return "Error inesperado: Permiso denegado."
          # +--------------------------------------------+
+
 # ================== CLASE numeracionPaginas =======================
+
+#  Está clase inserta la numeración correspondiente en cada hoja generada por la solucion
 
 class numeracionPaginas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
@@ -194,10 +198,12 @@ class numeracionPaginas(canvas.Canvas):
         self.drawRightString(204 * mm, 15 * mm + (0.2 * inch),
                              "Página {} de {}".format(self._pageNumber, conteoPaginas))        
 
-# ===================== Funcion generar tablas =====================
+# ===================== Procedimento generar tablas =====================
+
+# Procedimento puente que recibe todos los parametros necesarios para la creación del documento,
+# Su función es de crear un objeto de la clase PDF pasando todos los parametros, 
+# Haciendo referencia a la función .Exportar() que retorna un mensaje si el documento fue creado o no.
 
 def generarPDF(nombrePDF,datos_problema,soluciones,utilidadTotal):
-    #llamar la función Exportar, la cuál esta en la clase reportePDF, a esta clase le pasamos el título de la tabla, la
-    #cabecera y los datos que llevará.
     pdf = PDF (nombrePDF,datos_problema,soluciones,utilidadTotal).Exportar()
     print(pdf)
